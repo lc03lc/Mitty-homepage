@@ -17,7 +17,7 @@
         <img src="https://img.shields.io/badge/arXiv-Coming%20soon-b31b1b.svg?logo=arXiv">
     </a>
     &nbsp;
-    <a href="https://human-x-humanoid.github.io">
+    <a href="https://showlab.github.io/X-Humanoid">
         <img src="https://img.shields.io/badge/Project%20Website-EEEEEE">
     </a>
     &nbsp;
