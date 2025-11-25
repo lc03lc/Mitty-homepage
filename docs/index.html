@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X-Humanoid</title>
+    <link rel="icon" href="misc/showlab.ico">
+    
+    <style>
+        /* Keep only variables for colors, typography (font-family) and spacing */
+        :root {
+            /* Colors */
+            --color-primary-text: #262626;
+            --color-body-text: #0D0D0D;
+            --color-secondary-text: #7F7F7F;
+            --color-footer-text: #F2F2F2;
+            --color-button-bg: #0D0D0D;
+            --color-button-text: #FFFFFF;
+            --color-code-bg: #D9D9D9;
+            --color-footer-bg: #404040;
+            --color-link-hover: #4A90E2;
+
+            /* Typography (font-family) */
+            --font-title: 'SF-Pro-Display-Bold', Arial, sans-serif;
+            --font-subtitle: 'SF-Pro-Display-Regular', Arial, sans-serif;
+            --font-body: 'SF-Pro-Display-Light', Arial, sans-serif;
+            --font-body-highlight: 'SF-Pro-Display-Medium', Arial, sans-serif;
+            --font-button: 'SF-Pro-Rounded-Regular', Arial, sans-serif;
+            --font-code: 'SFMono-Regular', 'Courier New', monospace;
+
+            /* Spacing */
+            --spacing-small: 8px;
+            --spacing-medium: 16px;
+            --spacing-large: 24px;
+            --spacing-xl: 32px;
+            --spacing-xxl: 48px;
+            --margin-safe: 50px;
+            --spacing-xxxl: 64px;
+            --spacing-xxxxl: 96px;
+            --spacing-xxxxxl: 120px;
+
+            /* Line heights */
+            --line-height-normal: 1.15;
+            --line-height-code-between: 1.15;
+        }
+
+        /* Font Face Declarations (keep the same file names but avoid using generic family names)
+           Note: if you are using system fonts you don't need @font-face. These are examples. */
+        @font-face {
+            font-family: 'SF-Pro-Display-Bold';
+            src: url('fonts/SF-Pro-Display-Bold.otf') format('opentype');
+        }
+
+        @font-face {
+            font-family: 'SF-Pro-Display-Medium';
+            src: url('fonts/SF-Pro-Display-Medium.otf') format('opentype');
+        }
+
+        @font-face {
+            font-family: 'SF-Pro-Display-Light';
+            src: url('fonts/SF-Pro-Display-Light.otf') format('opentype');
+        }
+
+        @font-face {
+            font-family: 'SF-Pro-Display-Regular';
+            src: url('fonts/SF-Pro-Display-Regular.otf') format('opentype');
+        }
+
+        @font-face {
+            font-family: 'SF-Pro-Rounded-Regular';
+            src: url('fonts/SF-Pro-Rounded-Regular.otf') format('opentype');
+        }
+
+        @font-face {
+            font-family: 'SFMono-Regular';
+            src: url('fonts/SFMono-Regular.otf') format('opentype');
+        }
+
+        /* Reset + base */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { height: 100%; }
+
+        /* Make footer stick to bottom when content is short by using a column flex layout */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* ensure it fills viewport */
+
+            /* Safe margins on both sides at all viewport widths */
+            padding-left: var(--margin-safe);
+            padding-right: var(--margin-safe);
+
+            font-family: var(--font-body);
+            font-size: 14px; /* base size written directly as requested */
+            color: var(--color-body-text);
+            line-height: var(--line-height-normal);
+            background-color: #FFFFFF;
+
+            letter-spacing: 0.02em;
+        }
+
+        /* Main centered container; content area limited and centered within body padding */
+        .container {
+            max-width: 1200px; /* explicit value */
+            width: 100%;
+            margin: 0 auto;
+            padding-top: var(--spacing-large);
+            /* allow main content to grow and push footer down */
+            flex: 1 0 auto;
+        }
+
+        /* HEADER */
+        .header-group { text-align: center; margin-bottom: var(--spacing-xxl); }
+
+        .main-title {
+            font-family: var(--font-title);
+            font-size: 32px; /* explicit */
+            color: var(--color-primary-text);
+            max-width: 960px;
+            margin: var(--spacing-xxxl) auto var(--spacing-medium) auto;
+            line-height: var(--line-height-normal);
+
+            letter-spacing: normal;
+        }
+
+        .subtitle1 {
+            font-family: var(--font-subtitle);
+            font-size: 16px; /* explicit */
+            color: var(--color-body-text);
+            max-width: 768px;
+            margin: var(--spacing-small) auto var(--spacing-small) auto; /* center the box while text remains left-aligned when needed */
+            line-height: var(--line-height-normal);
+            letter-spacing: 0.01em;
+        }
+
+        .subtitle2 {
+            font-family: var(--font-subtitle);
+            font-size: 14px; /* explicit */
+            color: var(--color-secondary-text);
+            max-width: 768px;
+            margin: var(--spacing-small) auto var(--spacing-large) auto;
+            line-height: var(--line-height-normal);
+            letter-spacing: 0.01em;
+        }
+
+        .button-group {
+            max-width: 768px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: var(--spacing-medium);
+            letter-spacing: 0.04em;
+        }
+
+        .btn {
+            background-color: var(--color-button-bg);
+            color: var(--color-button-text);
+            font-family: var(--font-button);
+            font-size: 14px; /* explicit */
+            text-decoration: none;
+            padding: 4px 16px; /* explicit */
+            border-radius: 20px;
+            transition: opacity 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: normal;
+        }
+
+        .btn-icon {
+            height: 1em;                 /* make icon match text height */
+            width: auto;                 /* preserve aspect ratio */
+            flex-shrink: 0;
+        }
+
+        .btn:hover { opacity: 0.8; }
+
+        /* MAIN CONTENT: center the "box" that holds paragraphs/code/figures while keeping text left-aligned inside the box */
+        .content-group { margin-bottom: var(--spacing-xxl); }
+
+        .content-title {
+            font-family: var(--font-title);
+            font-size: 20px; /* explicit value: matches your "Abstract, 20, #0D0D0D" */
+            color: var(--color-primary-text);
+            max-width: 540px; /* explicit */
+            margin: var(--spacing-xxxl) auto var(--spacing-large) auto; /* this centers the title box */
+            line-height: var(--line-height-normal);
+            text-align: center; /* 1) Make the "Abstract..." title center-aligned */
+            letter-spacing: normal;
+        }
+
+        /* body-text: the box is centered (margin: 0 auto) but text inside is left aligned */
+        .body-text {
+            font-family: var(--font-body);
+            font-size: 14px; /* explicit */
+            color: var(--color-body-text);
+            max-width: 768px; /* explicit */
+            margin: var(--spacing-small) auto var(--spacing-small) auto; /* 2) center the auxiliary box holding the body text */
+            line-height: var(--line-height-normal);
+            text-align: left; /* keep paragraphs left-aligned inside the centered box */
+        }
+
+        .body-text-highlight {
+            font-family: var(--font-body-highlight);
+            font-size: 18px; /* explicit */
+            color: var(--color-body-text);
+            max-width: 512px; /* explicit */
+            margin: var(--spacing-small) auto var(--spacing-small) auto; /* 2) center the auxiliary box holding the body text */
+            line-height: var(--line-height-normal);
+            text-align: left; /* keep paragraphs left-aligned inside the centered box */
+        }
+
+        .code-block {
+            background-color: var(--color-code-bg);
+            max-width: 768px; /* explicit */
+            margin: var(--spacing-large) auto var(--spacing-large) auto; /* center the code box */
+            padding: 16px; /* explicit */
+            border-radius: 4px;
+        }
+
+        .code-block code {
+            font-family: var(--font-code);
+            font-size: 12px; /* explicit */
+            color: var(--color-body-text);
+            line-height: var(--line-height-code-between);
+            white-space: pre-wrap;
+            word-break: break-all;
+            display: block;
+            letter-spacing: -0.02em;
+        }
+
+        /* Figure box centered as a block (the placeholder inside remains centered) */
+        .figure {
+            max-width: 960px; /* explicit */
+            width: 100%;
+            margin: var(--spacing-xxxl) auto var(--spacing-xxxl) auto;
+        }
+
+        .figure img { width: 100%; height: auto; display: block; }
+
+        .figure-placeholder {
+            background-color: #555555;
+            color: #CCCCCC;
+            padding: var(--spacing-xxl);
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        .figure video {
+            width: 100%;
+            height: auto;
+            display: block;   /* removes extra whitespace */
+            pointer-events: none; /* prevents user interaction (optional) */
+        }
+
+
+        /* FOOTER: keep full-width background while footer content respects the safe margin and is centered */
+        .footer-group {
+            background-color: var(--color-footer-bg);
+
+            /* full-bleed background technique while keeping inner padding equal to the safe margin */
+            width: 100vw;
+            margin-left: calc(50% - 50vw);
+            margin-top: 0;
+            padding: 24px var(--margin-safe);
+            flex-shrink: 0; /* do not shrink footer */
+        }
+
+        .footer-content {
+            max-width: 1200px; /* explicit */
+            margin: var(--spacing-medium) auto;
+        }
+
+        .footer-text {
+            font-family: var(--font-body);
+            font-size: 10px; /* explicit */
+            color: var(--color-footer-text);
+            line-height: var(--line-height-normal);
+            text-align: left;
+            margin-bottom: var(--spacing-medium);
+        }
+
+        /* Links */
+        a { color: inherit; text-decoration: underline; transition: color 0.2s ease; }
+        a:hover { color: var(--color-link-hover); }
+        .btn a { color: inherit; text-decoration: none; }
+
+        /* Responsive tweaks: reduce safe margin and font sizes on small viewports. (Retain explicit values inside rules.) */
+        @media (max-width: 768px) {
+            :root { --margin-safe: 16px; }
+            .main-title { font-size: 28px; }
+        }
+
+        @media (max-width: 480px) {
+            :root { --margin-safe: 12px; }
+            .main-title { font-size: 24px; }
+            .subtitle1 { font-size: 13px; }
+        }
+
+        /* Number displays */
+        .stats-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin: var(--spacing-xxxl) auto var(--spacing-xxxl) auto;
+            gap: 1rem;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 150px; /* Fixed width for consistent sizing */
+            min-width: 150px;
+        }
+
+        .stat-number {
+            font-family: var(--font-title);
+            font-size: 3rem;
+            color: #333;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.3;
+            word-wrap: break-word;
+            hyphens: auto;
+        }
+    </style>
+
+    <!-- Font Awesome (free version) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Academicons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+</head>
+<body>
+    <div class="container">
+
+
+
+        <!-- Group 1: Header Section -->
+        <div class="header-group">
+            <h1 class="main-title">X-Humanoid: Robotize Human Videos to Generate Humanoid Videos at Scale</h1>
+            <p class="subtitle1"><a href="https://scholar.google.com/citations?user=eBvav_0AAAAJ&hl=en">Pei Yang</a><sup>&#42;</sup>, <a href="https://scholar.google.com/citations?user=GMrjppAAAAAJ&hl=en">Hai Ci</a><sup>&#42;</sup>, <a href="https://scholar.google.com/citations?user=L2YS0jgAAAAJ&hl=en">Yiren Song</a>, and <a href="https://sites.google.com/view/showlab">Mike Zheng Shou</a><sup>&#x2709</sup></p>
+            <p class="subtitle2"><a href="https://sites.google.com/view/showlab/home?authuser=0">Show Lab</a>, National University of Singapore</p>
+
+            <div class="button-group">
+                <a class="btn">
+                    <i class="ai ai-arxiv"></i>
+                    Paper (coming soon)
+                </a>
+                <a href="https://youtu.be/oHkZOMZamGY" class="btn">
+                    <i class="fa-brands fa-youtube"></i>
+                    Presentation
+                </a>
+                <a class="btn">
+                    <img src="misc/hf-logo-pirate.svg" class="btn-icon">
+                    Data (coming soon)
+                </a>
+                <a href="https://github.com/showlab/X-Humanoid" class="btn">
+                    <i class="fab fa-github btn-icon"></i>
+                    Code (coming soon)
+                </a>
+            </div>
+        </div>
+
+        
+
+
+
+        <!-- Group 3: Figure (can be placed anywhere) -->
+        <div class="figure">
+            <video autoplay loop muted playsinline>
+                <source src="media/teaser_video.mp4" type="video/mp4">
+            </video>
+        </div>
+        
+
+
+        <div style="height: var(--spacing-large);"></div>
+
+
+        <p class="body-text-highlight">
+            X-Humanoid transforms human videos into humanoid videos, creating data for training humanoid robot policies and world models.
+        </p>
+
+
+        <div style="height: var(--spacing-large);"></div>
+
+
+        <!-- Number displays -->
+        <div class="figure">
+            <video autoplay loop muted playsinline>
+                <source src="media/generated_webview.mp4" type="video/mp4">
+            </video>
+        </div>
+
+
+        <div style="height: var(--spacing-large);"></div>
+
+
+        <p class="body-text-highlight">
+            At the core of X-Humanoid is a Diffusion Transformer (DiT) for video-to-video editing. It is adapted from the powerful Wan 2.2 video generation model into a video-in video-out structure.
+        </p>
+
+
+        <div style="height: var(--spacing-large);"></div>
+
+
+        <div class="figure">
+            <img src="media/teaser_webview.jpg" alt="Paper teaser image">
+        </div>
+
+
+        <div style="height: var(--spacing-large);"></div>
+
+
+        <p class="body-text-highlight">
+            The model is finetuned on synthetic video pairs rendered in Unreal Engine. Each video pair contains a human and a humanoid performing synchronized motions in the same scene.
+        </p>
+
+
+        <div style="height: var(--spacing-large);"></div>
+
+
+        <div class="figure">
+            <video autoplay loop muted playsinline>
+                <source src="media/synthetic_webview.mp4" type="video/mp4">
+            </video>
+        </div>
+
+
+        <div style="height: var(--spacing-large);"></div>
+
+
+        <p class="body-text-highlight">
+            These paired videos are created using abundant community assets from the Fab marketplace. We align these assets to make them compatible so that the same animations can be played on different characters.
+        </p>
+
+
+        <div style="height: var(--spacing-large);"></div>
+
+
+        <div class="figure">
+            <img src="media/methodology_data.jpg" alt="Methodology figure">
+        </div>
+
+
+        <div style="height: var(--spacing-large);"></div>
+
+
+        <p class="body-text-highlight">
+            To adapt Wan 2.2 for video-to-video generation, we encode the input video into non-denoising condition tokens, concatenated with the denoising generation tokens. Only the generation tokens are denoised and then decoded to produce the edited video.
+        </p>
+
+
+        <div style="height: var(--spacing-large);"></div>
+
+
+        <div class="figure">
+            <img src="media/methodology_model.jpg" alt="Methodology figure">
+        </div>
+
+
+        <div style="height: var(--spacing-medium);"></div>
+
+
+        <p class="body-text-highlight">
+            X-Humanoid generates videos with the correct humanoid embodiment, with motions synchronized to the original video. Most users prefer X-Humanoid over the baselines.
+        </p>
+
+        
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-number">69%</div>
+                <div class="stat-label">Best Motion Consistency</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">75%</div>
+                <div class="stat-label">Best Background Consistency</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">62%</div>
+                <div class="stat-label">Best Embodiment Consistency</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">62%</div>
+                <div class="stat-label">Best Video Quality</div>
+            </div>
+        </div>
+
+
+        <div style="height: var(--spacing-medium);"></div>
+
+
+        <p class="body-text-highlight">
+            X-Humanoid can also robotize various Internet videos, enabling creative and diverse application scenarios.
+        </p>
+
+
+        <div style="height: var(--spacing-large);"></div>
+
+
+        <div class="figure">
+            <video autoplay loop muted playsinline>
+                <source src="media/internet_videos_webview.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <div class="content-group">
+            <h2 class="content-title">Acknowledgement</h2>
+
+            <p class="body-text">
+                X-Humanoid was created with the valuable discussions with Cheng Liu and Rui Zhao. 
+            </p>
+        </div>
+
+
+        <div class="content-group">
+            <div class="code-block">
+                <code>@article{xhumanoid,
+    title={X-Humanoid: Robotize Human Videos to Generate Humanoid Videos at Scale}, 
+    author={Pei Yang and Hai Ci and Yiren Song and Mike Zheng Shou},
+    year={2025},
+    archivePrefix={arXiv},
+    primaryClass={cs.AI},
+}</code>
+            </div>
+        </div>
+
+    
+
+    <!-- Group 4: Footer -->
+    <div class="footer-group">
+        <div class="footer-content">
+            <p class="footer-text">© 2025 Show Lab. &nbsp; Inspired by <a href="https://nerfies.github.io/">Nerfies</a>.</p>
+            <p class="footer-text">Licenced under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en">CC BY-NC-SA 4.0</a>. &nbsp; Fonts are excluded. &nbsp; If reusing this template, please keep this <a href="https://macos-world.github.io">link</a> in the footer.</p>
+        </div>
+    </div>
+</body>
+</html>
