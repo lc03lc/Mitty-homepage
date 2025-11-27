@@ -13,6 +13,12 @@
 </div>
 
 <div align="center">
+    <a href='https://showlab.github.io/X-Humanoid'>https://showlab.github.io/X-Humanoid</a>
+</div>
+
+<br/>
+
+<div align="center">
     <a href="https://example.com/coming-soon">
         <img src="https://img.shields.io/badge/arXiv-Coming%20soon-b31b1b.svg?logo=arXiv">
     </a>
