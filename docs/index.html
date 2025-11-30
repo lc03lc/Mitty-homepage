@@ -208,7 +208,7 @@
             font-family: var(--font-body-highlight);
             font-size: 18px;
             color: var(--color-body-text);
-            max-width: 512px;
+            max-width: 768px;
             margin: var(--spacing-small) auto var(--spacing-small) auto;
             line-height: var(--line-height-normal);
             text-align: left;
@@ -431,8 +431,24 @@
 
         <!-- 方法一句话简介（学术风格） -->
         <p class="body-text-highlight">
-            At the core of Mitty is a Wan 2.2–based Diffusion Transformer that uses video in-context learning: human demonstration videos are encoded as clean condition tokens, guiding noisy robot tokens via bidirectional attention to generate temporally aligned robot-arm executions.
+            At the core of Mitty is a Wan 2.2–based Diffusion Transformer that uses video in-context learning: human
+            demonstration videos are encoded as clean condition tokens, guiding noisy robot tokens via bidirectional
+            attention to generate temporally aligned robot-arm executions.
         </p>
+
+        <div style="height: var(--spacing-large);"></div>
+
+        <!-- Figure 1: 静态 teaser 图片 -->
+        <div class="figure">
+            <img src="media/method.png" alt="Mitty teaser figure">
+        </div>
+
+        <p class="body-text-highlight">
+            Mitty builds on a Diffusion Transformer–based video generator and adopts a video in-context learning paradigm. Human demonstration tokens are concatenated with noisy robot latent tokens, with noise injected only into the robot branch; bidirectional attention lets information flow between them so the model learns to generate robot manipulation videos directly from human demonstrations.
+        </p>
+
+        <div style="height: var(--spacing-large);"></div>
+
 
 
         <div style="height: var(--spacing-large);"></div>
