@@ -405,25 +405,7 @@
             </div>
         </div>
 
-        <!-- ✅ 已修改：Teaser 视频（占位文件名） -->
-        <div class="figure">
-            <!-- 把 src 换成你自己的 teaser：例如 media/mitty_teaser.mp4 -->
-            <video autoplay loop muted playsinline>
-                <source src="media/teaser.mp4" type="video/mp4">
-            </video>
-        </div>
-
-        <!-- 下面开始还是占位内容，暂时不动，之后再一步步改 -->
-        <div style="height: var(--spacing-large);"></div>
-
-        <p class="body-text-highlight">
-            Mitty translates human hand manipulation videos into temporally aligned robot-arm execution videos through
-            end-to-end diffusion-based Human2Robot video generation.
-        </p>
-
-        <!-- 两段结果视频（间距缩小） -->
         <div class="figure" style="margin-bottom: 16px;">
-            <!-- TODO: 换成你的结果视频 1，例如 media/result_h2r.mp4 -->
             <video autoplay loop muted playsinline>
                 <source src="media/result.mp4" type="video/mp4">
             </video>
@@ -444,45 +426,48 @@
         </div>
 
         <p class="body-text-highlight">
-            Mitty builds on a Diffusion Transformer–based video generator and adopts a video in-context learning paradigm. Human demonstration tokens are concatenated with noisy robot latent tokens, with noise injected only into the robot branch; bidirectional attention lets information flow between them so the model learns to generate robot manipulation videos directly from human demonstrations.
+            Mitty builds on a Diffusion Transformer–based video generator and adopts a video in-context learning
+            paradigm. Human demonstration tokens are concatenated with noisy robot latent tokens, with noise injected
+            only into the robot branch; bidirectional attention lets information flow between them so the model learns
+            to generate robot manipulation videos directly from human demonstrations.
         </p>
-
-        <div style="height: var(--spacing-large);"></div>
-
-
 
         <div style="height: var(--spacing-large);"></div>
 
         <div class="figure">
-            <div class="figure-placeholder">
-                Placeholder for method figure (e.g., architecture diagram)
-            </div>
+            <img src="media/method_steps.png" alt="Method steps">
         </div>
-
-        <div style="height: var(--spacing-large);"></div>
 
         <p class="body-text-highlight">
-            Summary sentence about your key quantitative results.
+            We detect hands with Detectron2 and segment them using Segment Anything, followed by hand keypoint detection
+            and inpainting to recover clean backgrounds. Using inverse kinematics, we map hand keypoints to robot arm
+            poses and render them. Finally, a human-in-the-loop filtering process curates over 6,000 high-quality
+            human-robot paired videos for training Mitty.
         </p>
 
-        <div class="stats-container">
-            <div class="stat-item">
-                <div class="stat-number">XX%</div>
-                <div class="stat-label">Metric 1</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">YY%</div>
-                <div class="stat-label">Metric 2</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">ZZ%</div>
-                <div class="stat-label">Metric 3</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">WW%</div>
-                <div class="stat-label">Metric 4</div>
-            </div>
+        <div class="figure" style="margin-bottom: 16px;">
+            <video autoplay loop muted playsinline>
+                <source src="media/comparison_masquerade.mp4" type="video/mp4">
+            </video>
         </div>
+
+        <p class="body-text-highlight">
+            Masquerade's multi-stage pipeline is prone to compounded errors (e.g., joint detection, inpainting, and
+            rendering failures). In contrast, Mitty's curated training data enables a robust end-to-end model with more
+            reliable Human2Robot mappings.
+        </p>
+
+        <div class="figure" style="margin-bottom: 16px;">
+            <video autoplay loop muted playsinline>
+                <source src="media/comparison_api.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <p class="body-text-highlight">
+            Compared to state-of-the-art video editing models, baselines struggle to maintain appearance and structural
+            consistency of the robot arm throughout the sequence, even with a reference image and a human demonstration
+            video as input.
+        </p>
 
         <div style="height: var(--spacing-large);"></div>
 
